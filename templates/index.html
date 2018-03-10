@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap"></script>
+    <!-- <script src="{{ url_for('static', filename='js/maps.js') }}" type="text/javascript"></script> -->
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+
+</head>
+<body>
+    <script>
+
+        function initMap() {
+            var mpls = {lat: 45.000, lng: -93.265};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13,
+                center: mpls,
+                disableDefaultUI: true
+            });
+
+            var contentString = '<div id="content">' +
+                '<div id="siteNotice">' +
+                '</div>' +
+                '<h1 id="firstHeading" class="firstHeading">Minneapolis Weather</h1>' +
+                '<div id="bodyContent">' +
+                '<p>Temperature (f): {{ temp_f }}</p>\n' +
+                '    <p>Feels Like (f): {{ feelslike_f }}</p>\n' +
+                '    <p>Weather condition: {{ weather }}</p>\n' +
+                '    <p>Visibility (miles): {{ visibility_mi }}</p>\n' +
+                '    <p>Barametric Pressure: {{ pressure_in }}</p>\n' +
+                '    <p>Wind Direction: {{ wind_dir }}</p>\n' +
+                '    <p>Wind: {{ wind_string }}</p>\n' +
+                '<img width="100" src="https://icons.wxug.com/logos/JPG/wundergroundLogo_4c_horz.jpg">' +
+                '</div>';
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            var iconBase = 'https://maps.google.com/mapfiles/kml/pal4/';
+            var marker = new google.maps.Marker({
+                position: mpls,
+                map: map,
+                title: 'Minneapolis Weather',
+                icon: iconBase + 'icon22.png'
+            });
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+        }
+
+    </script>
+
+    <div id="map"></div>
+</body>
+</html>
